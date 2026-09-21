@@ -1,114 +1,85 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EduMitra — Education Marketplace</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EduMitra - Education Marketplace</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--blue:#1264d8;--navy:#0b2d57;--bg:#f5f8fc;--text:#14213d;--muted:#6b7890;--card:#fff;--green:#18a86b;--yellow:#ffc928}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
-button,input,select{font:inherit}.app{max-width:480px;margin:auto;background:#fff;min-height:100vh;box-shadow:0 0 30px #00000012}
-header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #e8edf4;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:9px;font-weight:900;color:var(--navy);font-size:21px}.cap{font-size:25px}.menu{border:0;background:#eef5ff;color:var(--blue);border-radius:10px;padding:8px 11px}
-main{padding-bottom:78px}.hero{margin:16px;background:linear-gradient(135deg,#082f63,#1671e6);border-radius:22px;padding:24px 18px;color:white;overflow:hidden}.hero h1{font-size:29px;line-height:1.1;margin:8px 0}.hero p{margin:10px 0 18px;color:#dcecff}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer}.primary{background:var(--yellow);color:#152238}.secondary{background:#fff;color:var(--blue)}
-.search{margin:0 16px 16px;display:flex;background:#f2f5f9;border:1px solid #e3e9f2;border-radius:13px;padding:11px 13px;gap:8px}.search input{border:0;outline:0;background:transparent;width:100%}
-.section{padding:0 16px;margin:18px 0}.section-head{display:flex;justify-content:space-between;align-items:center}.section h2{font-size:19px;margin:0 0 12px}.link{color:var(--blue);font-size:13px;font-weight:800}
-.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.cat{background:#f7f9fd;border:1px solid #e9eef6;border-radius:14px;padding:12px 5px;text-align:center;font-size:11px;font-weight:700}.cat b{display:block;font-size:22px;margin-bottom:5px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.course{border:1px solid #e5eaf2;border-radius:15px;overflow:hidden;background:#fff}.thumb{height:105px;background:linear-gradient(135deg,#d9eaff,#8fc0ff);display:flex;align-items:center;justify-content:center;font-size:34px}.course-body{padding:10px}.course h3{font-size:13px;line-height:1.3;margin:0 0 7px}.meta{font-size:11px;color:var(--muted)}.price{font-weight:900;margin-top:7px}.old{text-decoration:line-through;color:#9aa5b5;font-weight:500;margin-left:4px;font-size:11px}.tag{background:#e4faef;color:#08764a;padding:3px 6px;border-radius:7px;font-size:10px;font-weight:800;float:right}
-.list{display:flex;flex-direction:column;gap:11px}.list .course{display:flex}.list .thumb{width:105px;min-width:105px;height:90px}.list .course-body{flex:1}
-.page{display:none;padding:16px}.page.active{display:block}.back{border:0;background:#eef4fc;border-radius:10px;padding:9px 12px;margin-bottom:14px}.detail-thumb{height:190px;border-radius:18px;background:linear-gradient(135deg,#cfe5ff,#5a9ff0);display:flex;align-items:center;justify-content:center;font-size:65px}.detail h1{font-size:23px;margin:14px 0 6px}.stars{color:#f3a400}.info-row{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.pill{background:#f0f5fb;border-radius:10px;padding:7px 9px;font-size:11px;font-weight:700}.buy{width:100%;background:var(--blue);color:#fff;border:0;border-radius:13px;padding:14px;font-weight:900;margin:12px 0}.form{display:flex;flex-direction:column;gap:10px}.form label{font-size:12px;font-weight:800}.form input,.form select,.form textarea{border:1px solid #dce4ef;border-radius:11px;padding:12px;outline:0}.dashboard-card{background:#f6f9fe;border:1px solid #e3eaf5;border-radius:15px;padding:14px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#fff;border:1px solid #e7edf5;border-radius:12px;padding:12px;text-align:center}.stat b{display:block;font-size:18px;color:var(--blue)}.stat small{color:var(--muted)}
-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:480px;width:100%;background:#fff;border-top:1px solid #e4e9f1;display:grid;grid-template-columns:repeat(4,1fr);padding:8px 8px 9px;z-index:20}nav button{border:0;background:none;color:#778399;font-size:10px;font-weight:700}nav button.active{color:var(--blue)}nav span{display:block;font-size:19px;margin-bottom:2px}
-.notice{padding:12px 14px;background:#fff8dc;border:1px solid #ffe59a;border-radius:13px;font-size:12px;margin:14px 0}
-.empty{padding:30px 10px;text-align:center;color:var(--muted)}
-@media(min-width:700px){body{padding:25px}.app{border-radius:22px;overflow:hidden}}
+:root{--b:#1264d8;--n:#0b2d57;--bg:#f5f8fc;--t:#172033;--m:#667085;--bd:#dbe3ef}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--t)}
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--bd)}
+.top{max-width:1100px;margin:auto;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{font-size:23px;font-weight:800;color:var(--b)}nav{display:flex;gap:7px;flex-wrap:wrap}
+button{border:0;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}.nav{background:#eef4ff;color:var(--b)}.primary{background:var(--b);color:#fff}
+.hero{background:linear-gradient(135deg,var(--n),var(--b));color:#fff;padding:42px 16px}.hero-in,.container{max-width:1100px;margin:auto}
+.hero h1{margin:0 0 10px;font-size:32px}.hero p{line-height:1.6}.container{padding:22px 16px 70px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}.card{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:18px;box-shadow:0 5px 18px #0b2d570d}
+.badge{display:inline-block;background:#e9f2ff;color:var(--b);padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}
+.section{margin-top:28px}.form{display:grid;gap:12px}input,textarea{width:100%;padding:12px;border:1px solid var(--bd);border-radius:10px;font-size:15px}textarea{min-height:90px}
+.notice{padding:12px;border-radius:10px;margin-bottom:12px;display:none}.ok{background:#e8f7ef;color:#12663b}.err{background:#fff0f0;color:#a51d2d}.small{font-size:13px;color:var(--m);line-height:1.5}
+footer{background:var(--n);color:#fff;text-align:center;padding:25px 16px}@media(max-width:600px){.top{align-items:flex-start}.hero h1{font-size:27px}}
 </style>
 </head>
 <body>
-<div class="app">
-<header><div class="brand"><span class="cap">🎓</span>EduMitra</div><button class="menu" onclick="alert('Menu: Courses • Notes • Test Series • Become a Teacher • Login')">☰</button></header>
+<header><div class="top">
+<div class="brand">📚 EduMitra</div>
+<nav><button class="nav" onclick="home()">Home</button><button class="nav" onclick="reg()">Teachers</button><button class="primary" onclick="reg()">Teacher Registration</button></nav>
+</div></header>
 
-<main>
-<section id="home" class="page active">
-  <div class="hero"><div>📚 Education Marketplace</div><h1>बेहतर शिक्षा<br>सभी के लिए</h1><p>Courses, Notes, Test Series और Teachers — सब एक जगह।</p><div class="actions"><button class="btn primary" onclick="show('courses')">Explore Courses</button><button class="btn secondary" onclick="show('teacher')">Become a Teacher</button></div></div>
-  <div class="search">🔍 <input placeholder="Courses, Notes, Test Series खोजें..." oninput="filterCourses(this.value)"></div>
-  <div class="section"><div class="section-head"><h2>Explore</h2><span class="link">View all</span></div><div class="cats">
-    <div class="cat"><b>🎥</b>Courses</div><div class="cat"><b>📄</b>Notes</div><div class="cat"><b>📝</b>Test Series</div><div class="cat"><b>👨‍🏫</b>Teachers</div>
-  </div></div>
-  <div class="section"><div class="section-head"><h2>🔥 Popular Courses</h2><span class="link" onclick="show('courses')">View All</span></div><div id="homeGrid" class="grid"></div></div>
-  <div class="section"><div class="dashboard-card"><b>👨‍🏫 अपना ज्ञान बेचें</b><p style="font-size:12px;color:#66748a">Teacher बनें, अपना course/notes upload करें और हर sale से कमाएँ।</p><button class="btn" style="background:var(--blue);color:#fff" onclick="show('teacher')">Start Selling</button></div></div>
-</section>
+<section class="hero"><div class="hero-in"><h1>EduMitra - शिक्षा का डिजिटल बाज़ार</h1>
+<p>Students के लिए notes, study material और teachers के लिए educational content platform.</p></div></section>
 
-<section id="courses" class="page">
-<button class="back" onclick="show('home')">← Back</button><h2>All Courses</h2>
-<div class="search" style="margin:0 0 14px">🔍 <input id="courseSearch" placeholder="Search courses..." oninput="filterCourses(this.value)"></div>
-<div id="courseList" class="list"></div>
-</section>
-
-<section id="detail" class="page">
-<button class="back" onclick="show('courses')">← Courses</button><div id="detailContent"></div>
-</section>
-
-<section id="teacher" class="page">
-<button class="back" onclick="show('home')">← Home</button><h2>👨‍🏫 Become a Teacher</h2><p style="color:var(--muted);font-size:13px">अपना knowledge share करें और EduMitra पर कमाएँ।</p>
-<div class="form">
-<label>Full Name *</label><input placeholder="आपका नाम">
-<label>Mobile Number *</label><input type="tel" placeholder="10 digit mobile number">
-<label>Email ID *</label><input type="email" placeholder="you@example.com">
-<label>Subject / Expertise *</label><select><option>Select Subject</option><option>REET</option><option>CTET</option><option>B.Ed.</option><option>Rajasthan Exams</option><option>Other</option></select>
-<label>Qualification *</label><input placeholder="e.g. M.A., B.Ed.">
-<label>City</label><input placeholder="आपका शहर">
-<label>Teaching Experience</label><select><option>Select Experience</option><option>Fresher</option><option>1–3 Years</option><option>3–5 Years</option><option>5+ Years</option></select>
-<label><input type="checkbox" style="width:auto"> मैं केवल अपना/अधिकृत educational content upload करूँगा।</label>
-<button class="buy" onclick="alert('Registration submitted! Demo mode में आपका form save नहीं किया गया है।')">Submit for Approval</button>
+<main class="container">
+<h2>EduMitra पर क्या मिलेगा?</h2>
+<div class="grid">
+<div class="card"><span class="badge">Students</span><h3>📖 Study Notes</h3><p>Exam-oriented notes और learning material.</p></div>
+<div class="card"><span class="badge">Teachers</span><h3>👩‍🏫 Teacher Community</h3><p>Teacher profile और content author application.</p></div>
+<div class="card"><span class="badge">Exams</span><h3>🎯 Competitive Exams</h3><p>CTET, DSSSB और अन्य परीक्षाओं की सामग्री.</p></div>
 </div>
-</section>
 
-<section id="login" class="page">
-<button class="back" onclick="show('home')">← Home</button><h2>👨‍🎓 Student Login</h2>
-<div class="form"><label>Mobile / Email</label><input placeholder="Mobile number or email"><label>Password</label><input type="password" placeholder="Password"><button class="buy" onclick="show('student')">Login</button><div style="text-align:center;color:var(--muted)">or</div><button class="btn" style="border:1px solid #dfe6ef;background:#fff">Continue with Google</button></div>
-</section>
-
-<section id="student" class="page">
-<h2>👋 Student Dashboard</h2><div class="dashboard-card"><b>Riya Meena</b><p style="margin:5px 0;color:#68768c;font-size:12px">Student • Premium</p></div><br>
-<div class="stats"><div class="stat"><b>5</b><small>Courses</small></div><div class="stat"><b>12</b><small>Notes</small></div><div class="stat"><b>3</b><small>Tests</small></div></div>
-<div class="section" style="padding:0;margin-top:18px"><h2>Continue Learning</h2><div class="dashboard-card">📘 REET 2025 Complete Course<br><small>60% complete</small><div style="height:7px;background:#e5edf7;border-radius:5px;margin-top:8px"><div style="width:60%;height:100%;background:var(--blue);border-radius:5px"></div></div></div></div>
-</section>
-
-<section id="checkout" class="page">
-<button class="back" onclick="show('detail')">← Back</button><h2>Order Summary</h2><div id="checkoutBox" class="dashboard-card"></div>
-<h3>Payment Method</h3><div class="form"><label>◉ UPI (PhonePe / Google Pay / Paytm)</label><label>○ Card (Debit / Credit)</label><label>○ Net Banking</label></div>
-<button class="buy" onclick="alert('Demo payment: Order created successfully!')">Pay Now</button>
-<div class="notice">🔒 Demo prototype. Production में payment gateway और seller payouts को secure server-side integration से जोड़ना होगा।</div>
-</section>
-
-<section id="admin" class="page">
-<h2>👑 Admin Dashboard</h2><div class="stats"><div class="stat"><b>12</b><small>Teachers</small></div><div class="stat"><b>28</b><small>Products</small></div><div class="stat"><b>45</b><small>Orders</small></div></div>
-<div class="section" style="padding:0"><div class="list"><div class="dashboard-card">👨‍🏫 Teachers <b style="float:right">12</b><br><small>Pending • Approved • Rejected</small></div><div class="dashboard-card">📚 Products <b style="float:right">28</b><br><small>Review and publish products</small></div><div class="dashboard-card">💰 Commission <b style="float:right">₹12,480</b><br><small>Default commission: 20%</small></div><div class="dashboard-card">💸 Payouts <b style="float:right">8</b><br><small>Teacher payouts</small></div></div></div>
-</section>
+<section id="register" class="section" style="display:none">
+<h2>👩‍🏫 Teacher / Content Author Registration</h2>
+<div class="card"><div id="msg" class="notice"></div>
+<form id="teacherForm" class="form">
+<input id="full_name" placeholder="पूरा नाम *" required>
+<input id="mobile" placeholder="मोबाइल नंबर *" required>
+<input id="email" type="email" placeholder="ईमेल *" required>
+<input id="subject" placeholder="विषय / Subject *" required>
+<input id="qualification" placeholder="शैक्षणिक योग्यता *" required>
+<input id="city" placeholder="शहर">
+<input id="experience" placeholder="Teaching Experience">
+<textarea id="content" placeholder="अपने educational content के बारे में लिखें"></textarea>
+<label class="small"><input id="authorized" type="checkbox" required style="width:auto"> मैं पुष्टि करता/करती हूँ कि जानकारी सही है और content author के रूप में आवेदन करने की अनुमति देता/देती हूँ।</label>
+<button class="primary" type="submit">Application Submit करें</button>
+</form></div></section>
 </main>
-
-<nav>
-<button class="active" onclick="show('home')"><span>⌂</span>Home</button>
-<button onclick="show('courses')"><span>▣</span>Courses</button>
-<button onclick="show('student')"><span>▤</span>My Learning</button>
-<button onclick="show('login')"><span>♙</span>Profile</button>
-</nav>
-</div>
+<footer>© 2026 EduMitra • Education Marketplace</footer>
 
 <script>
-const courses=[
- {id:1,title:"REET 2025 Complete Course",teacher:"Kavita Sharma",price:499,old:999,rating:"4.8",icon:"📘",meta:"42 Videos • 120+ Notes • 10 Mock Tests"},
- {id:2,title:"CTET Paper 1 + 2",teacher:"Rakesh Meena",price:599,old:1199,rating:"4.7",icon:"📗",meta:"55 Videos • 150+ Notes • 12 Tests"},
- {id:3,title:"B.Ed. Entrance Exam 2025",teacher:"Neha Saini",price:399,old:799,rating:"4.6",icon:"📕",meta:"30 Videos • 80+ Notes • 8 Tests"},
- {id:4,title:"Rajasthan Police Constable",teacher:"Suresh Choudhary",price:499,old:699,rating:"4.5",icon:"📙",meta:"36 Videos • 100+ Notes • 10 Tests"}
-];
-function card(c){return `<div class="course" data-title="${c.title.toLowerCase()}"><div class="thumb">${c.icon}</div><div class="course-body"><h3>${c.title}</h3><div class="meta">By ${c.teacher}</div><div class="stars">★ ${c.rating}</div><div class="price">₹${c.price}<span class="old">₹${c.old}</span><span class="tag">SALE</span></div><button class="btn" style="background:#eaf3ff;color:#1264d8;width:100%;margin-top:8px" onclick="openDetail(${c.id})">View Details</button></div></div>`}
-function render(){document.getElementById('homeGrid').innerHTML=courses.slice(0,2).map(card).join('');document.getElementById('courseList').innerHTML=courses.map(card).join('')}
-function filterCourses(q){q=(q||'').toLowerCase();document.querySelectorAll('#courseList .course').forEach(x=>x.style.display=x.dataset.title.includes(q)?'flex':'none')}
-function openDetail(id){const c=courses.find(x=>x.id===id);document.getElementById('detailContent').innerHTML=`<div class="detail-thumb">${c.icon}</div><h1>${c.title}</h1><div class="meta">By <b>${c.teacher}</b> ✓</div><div class="stars">★★★★★ ${c.rating} (1.2k Reviews)</div><div class="price" style="font-size:24px">₹${c.price} <span class="old">₹${c.old}</span> <span class="tag">50% OFF</span></div><div class="info-row"><span class="pill">${c.meta.split(' • ')[0]}</span><span class="pill">${c.meta.split(' • ')[1]}</span><span class="pill">${c.meta.split(' • ')[2]}</span></div><h3>About this Course</h3><p style="font-size:13px;line-height:1.6;color:#5e6b80">यह course परीक्षा की सम्पूर्ण तैयारी के लिए बनाया गया है। इसमें video classes, notes, practice और mock tests शामिल हैं।</p><h3>What you will learn</h3><p style="font-size:13px;line-height:1.8">✅ Syllabus की तैयारी<br>✅ महत्वपूर्ण concepts और tricks<br>✅ Previous Year Questions<br>✅ Mock Tests</p><button class="buy" onclick="checkout(${c.id})">Buy Now — ₹${c.price}</button>`;show('detail')}
-function checkout(id){const c=courses.find(x=>x.id===id);document.getElementById('checkoutBox').innerHTML=`<b>${c.title}</b><p style="color:#68768c;font-size:12px">Teacher: ${c.teacher}</p><h3>₹${c.price}</h3><hr><b>Total Amount: ₹${c.price}</b>`;show('checkout')}
-function show(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(id==='home')document.querySelector('nav button:nth-child(1)').classList.add('active');if(id==='courses')document.querySelector('nav button:nth-child(2)').classList.add('active');if(id==='student')document.querySelector('nav button:nth-child(3)').classList.add('active');}
-render();
+const SUPABASE_URL="https://dgtqyujkfxtrdkfxoeqq.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_DNu8yA0RtUF8toAmzpHM0g_rsYzol24";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+function reg(){document.getElementById("register").style.display="block";document.getElementById("register").scrollIntoView({behavior:"smooth"})}
+function home(){document.getElementById("register").style.display="none";window.scrollTo({top:0,behavior:"smooth"})}
+function msg(t,c){const x=document.getElementById("msg");x.textContent=t;x.className="notice "+c;x.style.display="block"}
+
+document.getElementById("teacherForm").addEventListener("submit",async e=>{
+e.preventDefault();msg("Application submit हो रही है…","ok");
+const {data:{user}}=await db.auth.getUser();
+if(!user){msg("पहले login/signup करना आवश्यक है। Form अभी submit नहीं हुआ।","err");return}
+const payload={
+id:user.id,
+full_name:full_name.value.trim(),mobile:mobile.value.trim(),email:email.value.trim(),
+subject:subject.value.trim(),qualification:qualification.value.trim(),
+city:city.value.trim()||null,experience:experience.value.trim()||null,
+content_authorized:authorized.checked,status:"pending"
+};
+const {error}=await db.from("teachers").upsert(payload);
+if(error){msg("Submit नहीं हुआ: "+error.message,"err");return}
+msg("✅ Teacher application सफलतापूर्वक submit हो गया।","ok");e.target.reset();
+});
 </script>
 </body>
 </html>
